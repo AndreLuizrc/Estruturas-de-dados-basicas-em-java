@@ -32,12 +32,12 @@ public class ArvoreBinaria {
 
         if(i == null){
             i = new No(x);
-        }else if( x == i.elemento){
-            throw new Exception("Elemento já adicionado a arvore!");
+        }else if( x < i.elemento){
+            i.esq = inserir(x, i.esq);
         }else if(x > i.elemento){
             i.dir = inserir(x, i.dir);
         }else{
-            i.esq = inserir(x, i.esq);
+            throw new Exception("Elemento já adicionado a arvore!");
         }
 
         return i;
@@ -47,11 +47,39 @@ public class ArvoreBinaria {
         raiz = inserir(x, raiz);
     }
 
-    public void caminharPre(No i){
+    public void caminharPre(){
+        caminharPre(raiz);
+    }
+
+    private void caminharPre(No i){
         if(i != null){
             System.out.println(i.elemento);
             caminharPre(i.esq);
             caminharPre(i.dir);
+        }
+    }
+
+    public void caminharCentral(){
+        caminharCentral(raiz);
+    }
+
+    private void caminharCentral(No i){
+        if(i != null){
+            caminharCentral(i.esq);
+            System.out.println(i.elemento);
+            caminharCentral(i.dir);
+        }
+    }
+
+    public void caminharPos(){
+        caminharPos(raiz);
+    }
+
+    private void caminharPos(No i){
+        if(i != null){
+            caminharPos(i.esq);
+            caminharPos(i.dir);
+            System.out.println(i.elemento);
         }
     }
 
@@ -98,11 +126,15 @@ public class ArvoreBinaria {
         return cont;
     }
 
-    public boolean compare(No i, No j){
+    public boolean compare(ArvoreBinaria arvore2){
+        return compare(raiz, arvore2.getRaiz());
+    };
+
+    private boolean compare(No i, No j){
         boolean resp = false;
 
         if(i != null && j != null){
-            resp = (i.elemento == j.elemento && compare(i.esq, j.dir) && compare(i.esq, j.dir));
+            resp = (i.elemento == j.elemento && compare(i.esq, j.esq) && compare(i.dir, j.dir));
         }else if(i == null && j == null){
             resp = true;
         }else {
@@ -110,5 +142,9 @@ public class ArvoreBinaria {
         }
 
         return resp;
+    }
+
+    private No getRaiz(){
+        return raiz;
     }
 }
