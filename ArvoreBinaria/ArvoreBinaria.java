@@ -42,9 +42,43 @@ public class ArvoreBinaria {
 
         return i;
     }
-
+    
     public void inserir(int x) throws Exception{
         raiz = inserir(x, raiz);
+    }
+
+    public void remover(int x) throws Exception{
+        raiz = remover(x, raiz);
+    }
+
+    private No remover(int x, No i) throws Exception{
+
+        if(i == null){
+            throw new Exception("O item que deseja remover não existe");
+        }else if(x > i.elemento){
+            i.dir = remover(x, i.dir);
+        }else if(x < i.elemento){
+            i.esq = remover(x, i.esq);
+        }else if(i.esq == null){
+            i = i.dir;
+        }else if(i.dir == null){
+            i = i.esq;
+        }else{
+            i.esq = maiorEsq(i, i.esq);
+        }
+
+        return i;
+    }
+
+    private No maiorEsq(No i, No j){
+        if(j.dir == null){
+            i.elemento = j.elemento;
+            j = j.esq;
+        }else{
+            j.dir = maiorEsq(i, j.dir);
+        }
+
+        return j;
     }
 
     public void caminharPre(){
@@ -143,6 +177,8 @@ public class ArvoreBinaria {
 
         return resp;
     }
+
+
 
     private No getRaiz(){
         return raiz;
